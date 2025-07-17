@@ -1,0 +1,266 @@
+Q1: Create a database named college_db.
+Answer: CREATE DATABASE college_db;
+
+Q2: Create a table students with fields: id, name, age, department.
+Answer: CREATE TABLE students (id INT PRIMARY KEY, name VARCHAR(50), age INT, department VARCHAR(50));
+
+Q3: Insert 5 records into the students table.
+Answer: 
+INSERT INTO students VALUES (1, 'Alice', 19, 'Physics');
+INSERT INTO students VALUES (2, 'Bob', 21, 'Computer Science');
+INSERT INTO students VALUES (3, 'Charlie', 20, 'Mathematics');
+INSERT INTO students VALUES (4, 'David', 22, 'Physics');
+INSERT INTO students VALUES (5, 'Eva', 23, 'Computer Science');
+
+Q4: Write a query to fetch all records from students.
+Answer: SELECT * FROM students;
+
+Q5: Fetch students whose age is greater than 20.
+Answer: SELECT * FROM students WHERE age > 20;
+
+Q6: Update the department of a student where name is ‘John’.
+Answer: UPDATE students SET department = 'Biology' WHERE name = 'John';
+
+Q7: Delete a student whose ID is 3.
+Answer: DELETE FROM students WHERE id = 3;
+
+Q8: Select students ordered by age in descending order.
+Answer: SELECT * FROM students ORDER BY age DESC;
+
+Q9: Fetch only distinct departments from the students table.
+Answer: SELECT DISTINCT department FROM students;
+
+Q10: Count the number of students in the table.
+Answer: SELECT COUNT(*) FROM students;
+
+Q11: Rename the students table to student_info.
+Answer: RENAME TABLE students TO student_info;
+
+Q12: Add a new column email to the student_info table.
+Answer: ALTER TABLE student_info ADD email VARCHAR(100);
+
+Q13: Write a query to find students whose name starts with ‘A’.
+Answer: SELECT * FROM student_info WHERE name LIKE 'A%';
+
+Q14: Display students whose age is between 18 and 25.
+Answer: SELECT * FROM student_info WHERE age BETWEEN 18 AND 25;
+
+Q15: Write a query to find the student with the highest age.
+Answer: SELECT * FROM student_info ORDER BY age DESC LIMIT 1;
+
+Q16: Use LIMIT to display the first 3 students.
+Answer: SELECT * FROM student_info LIMIT 3;
+
+Q17: Create a table courses with fields: course_id, course_name, credits.
+Answer: CREATE TABLE courses (course_id INT PRIMARY KEY, course_name VARCHAR(100), credits INT);
+
+Q18: Insert 3 records into the courses table.
+Answer: 
+INSERT INTO courses VALUES (101, 'Math', 4);
+INSERT INTO courses VALUES (102, 'Physics', 3);
+INSERT INTO courses VALUES (103, 'Computer Science', 5);
+
+Q19: Select all students whose department is ‘Computer Science’.
+Answer: SELECT * FROM student_info WHERE department = 'Computer Science';
+
+Q20: Use IN to fetch students from specific departments.
+Answer: SELECT * FROM student_info WHERE department IN ('Physics', 'Mathematics');
+
+Q21: Use BETWEEN to find students aged between 20 and 30.
+Answer: SELECT * FROM student_info WHERE age BETWEEN 20 AND 30;
+
+Q22: Write a query to display current system date and time.
+Answer: SELECT NOW();
+
+Q23: Use AS to rename a column in the SELECT query.
+Answer: SELECT name AS student_name FROM student_info;
+
+Q24: Write a query to fetch all data except students of a particular department.
+Answer: SELECT * FROM student_info WHERE department != 'Physics';
+
+Q25: Delete all records from the students table without dropping the table.
+Answer: DELETE FROM student_info;
+
+-- Advanced --
+
+Q26: Create a marks table with fields: student_id, subject, marks.
+Answer: CREATE TABLE marks (student_id INT, subject VARCHAR(50), marks INT);
+
+Q27: Insert at least 5 records into the marks table.
+Answer: 
+INSERT INTO marks VALUES (1, 'Math', 85);
+INSERT INTO marks VALUES (2, 'Math', 90);
+INSERT INTO marks VALUES (3, 'Physics', 78);
+INSERT INTO marks VALUES (4, 'CS', 88);
+INSERT INTO marks VALUES (5, 'Math', 92);
+
+Q28: Use JOIN to combine students and marks data.
+Answer: 
+SELECT s.id, s.name, m.subject, m.marks
+FROM student_info s
+JOIN marks m ON s.id = m.student_id;
+
+Q29: Write a query to calculate average marks per student.
+Answer: 
+SELECT student_id, AVG(marks) AS avg_marks
+FROM marks
+GROUP BY student_id;
+
+Q30: Use GROUP BY to find total marks obtained by each student.
+Answer: 
+SELECT student_id, SUM(marks) AS total_marks
+FROM marks
+GROUP BY student_id;
+
+Q31: Use HAVING to find students who scored more than 200 in total.
+Answer: 
+SELECT student_id, SUM(marks) AS total_marks
+FROM marks
+GROUP BY student_id
+HAVING total_marks > 200;
+
+Q32: Write a query to fetch students with the same age using GROUP BY and COUNT().
+Answer: 
+SELECT age, COUNT(*) 
+FROM student_info 
+GROUP BY age 
+HAVING COUNT(*) > 1;
+
+Q33: Use INNER JOIN, LEFT JOIN, RIGHT JOIN and explain the difference.
+Answer: 
+-- INNER JOIN:
+SELECT * FROM student_info s INNER JOIN marks m ON s.id = m.student_id;
+-- LEFT JOIN:
+SELECT * FROM student_info s LEFT JOIN marks m ON s.id = m.student_id;
+-- RIGHT JOIN:
+SELECT * FROM student_info s RIGHT JOIN marks m ON s.id = m.student_id;
+
+Q34: Create a new table with a PRIMARY KEY and AUTO_INCREMENT.
+Answer: 
+CREATE TABLE test_table (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(50)
+);
+
+Q35: Create a table with a FOREIGN KEY referencing another table.
+Answer: 
+CREATE TABLE enrollments (
+  student_id INT,
+  course_id INT,
+  FOREIGN KEY (student_id) REFERENCES student_info(id),
+  FOREIGN KEY (course_id) REFERENCES courses(course_id)
+);
+
+Q36: Write a subquery to find the maximum marks in the marks table.
+Answer: 
+SELECT * FROM marks WHERE marks = (SELECT MAX(marks) FROM marks);
+
+Q37: Create a view to display student names and their total marks.
+Answer: 
+CREATE VIEW student_totals AS
+SELECT s.name, SUM(m.marks) AS total_marks
+FROM student_info s
+JOIN marks m ON s.id = m.student_id
+GROUP BY s.name;
+
+Q38: Use a subquery to list students who scored more than the average mark.
+Answer: 
+SELECT * FROM marks WHERE marks > (SELECT AVG(marks) FROM marks);
+
+Q39: Create a stored procedure to insert new student data.
+Answer: 
+DELIMITER //
+CREATE PROCEDURE add_student(IN name VARCHAR(50), IN age INT, IN dept VARCHAR(50))
+BEGIN
+  INSERT INTO student_info (name, age, department) VALUES (name, age, dept);
+END;
+//
+DELIMITER ;
+
+Q40: Create a stored procedure to update student department.
+Answer: 
+DELIMITER //
+CREATE PROCEDURE update_department(IN sid INT, IN dept VARCHAR(50))
+BEGIN
+  UPDATE student_info SET department = dept WHERE id = sid;
+END;
+//
+DELIMITER ;
+
+Q41: Create a user-defined function to calculate grade from marks.
+Answer: 
+DELIMITER //
+CREATE FUNCTION get_grade(marks INT)
+RETURNS VARCHAR(2)
+DETERMINISTIC
+BEGIN
+  RETURN CASE
+    WHEN marks >= 90 THEN 'A'
+    WHEN marks >= 75 THEN 'B'
+    WHEN marks >= 60 THEN 'C'
+    ELSE 'F'
+  END;
+END;
+//
+DELIMITER ;
+
+Q42: Create a trigger that logs insert operations on students.
+Answer: 
+CREATE TABLE student_log (
+  log_id INT AUTO_INCREMENT PRIMARY KEY,
+  student_name VARCHAR(50),
+  action_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+DELIMITER //
+CREATE TRIGGER after_student_insert
+AFTER INSERT ON student_info
+FOR EACH ROW
+BEGIN
+  INSERT INTO student_log (student_name) VALUES (NEW.name);
+END;
+//
+DELIMITER ;
+
+Q43: Use a transaction to update multiple records atomically.
+Answer: 
+START TRANSACTION;
+UPDATE student_info SET age = age + 1 WHERE department = 'Math';
+UPDATE student_info SET age = age + 1 WHERE department = 'Physics';
+COMMIT;
+
+Q44: Write a query to find duplicate records using GROUP BY and HAVING.
+Answer: 
+SELECT name, COUNT(*) 
+FROM student_info 
+GROUP BY name 
+HAVING COUNT(*) > 1;
+
+Q45: Create a backup of a database using mysqldump.
+Answer: 
+mysqldump -u root -p college_db > backup.sql
+
+Q46: Restore a MySQL database from a backup file.
+Answer: 
+mysql -u root -p college_db < backup.sql
+
+Q47: Import data from a CSV file into a MySQL table.
+Answer: 
+LOAD DATA INFILE 'students.csv'
+INTO TABLE student_info
+FIELDS TERMINATED BY ',' 
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;
+
+Q48: Create an index on student name for faster search.
+Answer: 
+CREATE INDEX idx_name ON student_info(name);
+
+Q49: Write a query to find the second highest mark in a subject.
+Answer: 
+SELECT MAX(marks) FROM marks 
+WHERE marks < (SELECT MAX(marks) FROM marks);
+
+Q50: Drop the courses table and explain the effect.
+Answer: 
+DROP TABLE courses;
